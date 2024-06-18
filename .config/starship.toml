@@ -3,10 +3,10 @@
 format = """
 [](fg:dir_bg_color)\
 $directory\
-[](fg:dir_bg_color bg:git_bg_color)\
+[](fg:dir_bg_color bg:git_bg_color)\
 $git_branch\
 $git_status\
-[](fg:git_bg_color bg:code_bg_color)\
+[](fg:git_bg_color bg:code_bg_color)\
 $buf\
 $c\
 $elixir\
@@ -20,27 +20,27 @@ $nodejs\
 $nim\
 $rust\
 $scala\
-[](fg:code_bg_color bg:tool_bg_color)\
+[](fg:code_bg_color bg:tool_bg_color)\
 $kubernetes\
 $container\
 $docker_context\
-[](fg:tool_bg_color bg:character_bg_color)\
+[](fg:tool_bg_color bg:character_bg_color)\
 $cmd_duration\
 $character
 """
 
-palette = 'polar_night'
+palette = 'frost'
 
 # Nord Polar Night
 [palettes.polar_night]
-dir_bg_color = '#c6a0f6'
-git_bg_color = '#ee99a0'
-code_bg_color = '#f5a97f'
-tool_bg_color = '#8bd5ca'
-text_color = '#414559'
-character_bg_color = '#cad3f5'
-character_text_color = '#414559'
-character_text_error_color = '#ed8796'
+dir_bg_color = '#2E3440'
+git_bg_color = '#3B4252'
+code_bg_color = '#434C5E'
+tool_bg_color = '#4C566A'
+text_color = '#D8DEE9'
+character_bg_color = '#D8DEE9'
+character_text_color = '#2E3440'
+character_text_error_color = '#BF616A'
 
 # Nord Snow Storm
 [palettes.snow_storm]
@@ -86,8 +86,8 @@ style = "bg:character_bg_color fg:character_text_color"
 format = '[ $duration ]($style)'
 
 [character]
-success_symbol = "[](fg:character_bg_color bg:character_bg_color)[](fg:character_bg_color)"
-error_symbol = "[](fg:character_bg_color bg:character_text_error_color)[](fg:character_text_error_color)"
+success_symbol = "[](fg:character_bg_color bg:character_bg_color)[](fg:character_bg_color)"
+error_symbol = "[](fg:character_bg_color bg:character_text_error_color)[](fg:character_text_error_color)"
 
 [directory]
 style = "bg:dir_bg_color fg:text_color"
@@ -98,7 +98,7 @@ truncation_symbol = "󰦩 "
 read_only = "󰌾 "
 
 [directory.substitutions]
-"/" = "  "
+"/" = " 󰿟 "
 
 [c]
 symbol = " "
