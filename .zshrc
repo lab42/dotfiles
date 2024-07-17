@@ -1,12 +1,10 @@
 # Author: Dany Henriquez
+# Description: Zsh configuration
 
 # History configuration
 export HISTFILE="$HOME/.zsh_history"  # Location of the history file
 export HISTSIZE=10000                            # Maximum number of history events in memory
 export SAVEHIST=$HISTSIZE                       # Number of history events to save to the history file
-
-# Colors
-eval "$(dircolors -b ~/.dircolors)"
 
 # History options
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
@@ -36,7 +34,7 @@ setopt AUTO_MENU                  # Automatically use menu completion
 # zstyle options for navigation
 zstyle ':completion:*' menu select  # Enable menu selection for completions
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}  # Use LS_COLORS for completion coloring
-zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'  # Prompt message
+zstyle ':completion:*:default' list-prompt '%SAt %p: Hit TAB for more, or the character to insert%s'
 zstyle ':completion:*:descriptions' format '%B%d%b'  # Description formatting
 zstyle ':completion:*:warnings' format '%B%F{red}No matches for: %d%b%f'  # Warning message formatting
 
@@ -48,130 +46,89 @@ bindkey '^[[F' end-of-line  # End to go to the end of the line
 bindkey '^[[3~' delete-char  # Delete to delete the character under the cursor
 bindkey '^[[2~' overwrite-mode  # Insert to toggle overwrite mode
 
-# Initialize Starship prompt
-eval "$(starship init zsh)"
+# Dircolors
+if which dircolors &> /dev/null; then
+    eval "$(dircolors -b ~/.dircolors)"
+fi
+
+if which gdircolors &>/dev/null; then
+    eval "$(gdircolors -b ~/.dircolors)"
+fi
 
 # Load Zsh Syntax Highlighting plugin
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if [ -f "/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "$ZSH_SYNTAX_HIGHLIGHTING"
+fi
+
+if which brew &>/dev/null; then
+    ZSH_SYNTAX_HIGHLIGHTING="$(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+    if [ -f "$ZSH_SYNTAX_HIGHLIGHTING" ]; then
+        source "$ZSH_SYNTAX_HIGHLIGHTING"
+    fi
+fi
+
+# Alias configuration
+source "$HOME/.zshrc.aliases"
+
+# Initialize Starship prompt
+if which starship &> /dev/null; then
+    eval "$(starship init zsh)"
+fi
 
 # Update PATH to include Go binaries
-export PATH="$PATH:$(go env GOPATH)/bin"
+if which go &> /dev/null; then
+    export PATH="$PATH:$(go env GOPATH)/bin"
+fi
 
 # Initialize command completion
 autoload -Uz compinit
 compinit
 
-# Aliases
-# General Navigation
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias ~="cd ~"
-alias c="clear"
-alias cl="clear; ls"
+# Set GVM_DIR variable
+export GVM_DIR="$HOME/.gvm"
 
-# File and Directory Operations
-alias ls='ls --color=auto'
-alias ll="ls -alF"
-alias la="ls -A"
-alias l="ls -CF"
-alias md="mkdir -p"
-alias rd="rmdir"
-alias mv="mv -i"
-alias cp="cp -i"
-alias rm="rm -i"
-alias rmd="rm -rf"
-alias du="du -h"
-alias df="df -h"
-alias h="history"
+# Check if GVM_DIR directory exists and if gvm.sh is readable
+if [ -d "$GVM_DIR" ] && [ -s "$GVM_DIR/scripts/gvm" ]; then
+    # Load gvm.sh and setup chpwd hook for .go-version management
+    source "$GVM_DIR/scripts/gvm"
+    autoload -U add-zsh-hook
+    add-zsh-hook chpwd load-go-version
 
-# Git
-alias gst="git status"
-alias ga="git add"
-alias gaa="git add ."
-alias gcm="git commit -m"
-alias gp="git push"
-alias gpl="git pull"
-alias gco="git checkout"
-alias gcb="git checkout -b"
-alias gb="git branch"
-alias gl="git log"
-alias gm="git merge"
-alias gcl="git clone"
+    load-go-version() {
+        local go_version_path="$PWD/.go-version"
+        if [ -f "$go_version_path" ]; then
+            local go_version=$(cat "$go_version_path")
+            gvm use "$go_version"
+        elif [ "$(gvm current)" != "$(gvm default)" ]; then
+            gvm use default
+        fi
+    }
+fi
 
-# Kubectl
-alias k="kubectl"
-alias kgp="kubectl get pods"
-alias kgs="kubectl get svc"
-alias kgd="kubectl get deployments"
-alias kgn="kubectl get nodes"
-alias kge="kubectl get events"
-alias kaf="kubectl apply -f"
-alias kdf="kubectl delete -f"
-alias kgc="kubectl config get-contexts"
-alias kcc="kubectl config current-context"
-alias ksc="kubectl config set-context"
-alias kuc="kubectl config use-context"
-alias kd="kubectl describe"
-alias kl="kubectl logs"
-alias kex="kubectl exec -it"
-alias kpf="kubectl port-forward"
-alias krun="kubectl run"
-alias kapp="kubectl apply -k"
-alias kdel="kubectl delete"
-alias ke="kubectl edit"
-alias ka="kubectl apply -f"
-
-# Docker
-alias dcu="docker-compose up"
-alias dcd="docker-compose down"
-alias dcb="docker-compose build"
-alias dcr="docker-compose run"
-alias dps="docker ps"
-alias dexec="docker exec -it"
-alias drm="docker rm"
-alias drmi="docker rmi"
-alias dlogs="docker logs"
-
-# Network
-alias myip="curl ifconfig.me"
-alias ports="netstat -tulanp"
-alias ping="ping -c 5"
-alias wget="wget -c"
-alias curl="curl -O"
-
-# System Monitoring
-alias top="htop"
-alias meminfo="free -m -l -t"
-alias psmem="ps auxf | sort -nr -k 4"
-alias pscpu="ps auxf | sort -nr -k 3"
-
-# Pacman
-alias pacup="sudo pacman -Syu"
-alias pacin="sudo pacman -S"
-alias pacre="sudo pacman -R"
-alias pacse="pacman -Ss"
-alias pacli="pacman -Qi"
-alias pacls="pacman -Qs"
-alias pacrm="sudo pacman -Rns"
-alias paccl="sudo pacman -Sc"
-alias paccle="sudo pacman -Scc"
-alias pacorph="sudo pacman -Rns $(pacman -Qdtq)"
-
-# Yay
-alias yayup="yay -Syu"
-alias yayin="yay -S"
-alias yayre="yay -R"
-alias yayse="yay -Ss"
-alias yayli="yay -Qi"
-alias yayls="yay -Qs"
-alias yayrm="yay -Rns"
-alias yaycl="yay -Sc"
-alias yaycle="yay -Scc"
-alias yayorph="yay -Rns $(yay -Qdtq)"
-# End aliases 
-
-# NVM (Node Version Manager) configuration
+# Set NVM_DIR variable
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # Load nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # Load nvm bash_completion
+
+# Check if NVM_DIR directory exists and if nvm.sh is readable
+if [ -d "$NVM_DIR" ] && [ -s "$NVM_DIR/nvm.sh" ]; then
+    # Load nvm.sh and setup chpwd hook for .nvmrc management
+    . "$NVM_DIR/nvm.sh"
+    autoload -U add-zsh-hook
+    add-zsh-hook chpwd load-nvmrc
+
+    load-nvmrc() {
+        local nvmrc_path="$(nvm_find_nvmrc)"
+        if [ -f "$nvmrc_path" ]; then
+            local nvmrc_version=$(cat "$nvmrc_path")
+            [ "$(nvm version "$nvmrc_version")" = "N/A" ] && nvm install
+            [ "$(nvm current)" != "$nvmrc_version" ] && nvm use
+        elif [ "$(nvm current)" != "$(nvm version default)" ]; then
+            nvm use default
+        fi
+    }
+fi
+
+# Check if bash_completion exists and is readable
+if [ -s "$NVM_DIR/bash_completion" ]; then
+    . "$NVM_DIR/bash_completion" # Load nvm bash_completion
+fi

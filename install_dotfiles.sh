@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+
 # Author: Dany Henriquez
 # Description: Script to symlink dotfiles and configs
 
@@ -8,6 +8,7 @@ DOTFILES_DIR="$(pwd)"
 # Array of dotfiles and config files to symlink
 files=(
     "$DOTFILES_DIR/.zshrc:$HOME/.zshrc"
+    "$DOTFILES_DIR/.zshrc.aliases:$HOME/.zshrc.aliases"
     "$DOTFILES_DIR/.dircolors:$HOME/.dircolors"
     "$DOTFILES_DIR/.config/starship.toml:$HOME/.config/starship.toml"
 )
@@ -21,17 +22,17 @@ create_symlink() {
     if [ -e "$target_file" ]; then
         read -p "Target file '$target_file' already exists. Do you want to replace it? (y/n): " replace_choice
         case "$replace_choice" in
-            y|Y )
-                echo "Replacing existing $target_file"
-                rm -rf "$target_file"
-                ln -s "$source_file" "$target_file"
-                ;;
-            n|N )
-                echo "Skipping $target_file"
-                ;;
-            * )
-                echo "Invalid choice. Skipping $target_file"
-                ;;
+        y | Y)
+            echo "Replacing existing $target_file"
+            rm -rf "$target_file"
+            ln -s "$source_file" "$target_file"
+            ;;
+        n | N)
+            echo "Skipping $target_file"
+            ;;
+        *)
+            echo "Invalid choice. Skipping $target_file"
+            ;;
         esac
     else
         # Create the symlink if the target file doesn't exist
@@ -40,20 +41,24 @@ create_symlink() {
     fi
 }
 
-# Symlink each file to its target location
-for file in "${files[@]}"; do
-    source_file="${file%%:*}"   # Extract source file from "source:target"
-    target_file="${file#*:}"    # Extract target file from "source:target"
+# Function to install dotfiles
+install() {
+    for file in "${files[@]}"; do
+        source_file="${file%%:*}" # Extract source file from "source:target"
+        target_file="${file#*:}"  # Extract target file from "source:target"
 
-    # Ensure the target directory exists
-    target_dir=$(dirname "$target_file")
-    if [ ! -d "$target_dir" ]; then
-        echo "Creating directory: $target_dir"
-        mkdir -p "$target_dir"
-    fi
+        # Ensure the target directory exists
+        target_dir=$(dirname "$target_file")
+        if [ ! -d "$target_dir" ]; then
+            echo "Creating directory: $target_dir"
+            mkdir -p "$target_dir"
+        fi
 
-    # Create the symlink
-    create_symlink "$source_file" "$target_file"
-done
+        # Create the symlink
+        create_symlink "$source_file" "$target_file"
+    done
 
-echo "Installation complete."
+    echo "Installation complete."
+}
+
+install
