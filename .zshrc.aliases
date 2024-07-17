@@ -1,0 +1,300 @@
+
+# Author: Dany Henriquez
+# Description: Script for tool specific aliases
+
+# General Navigation
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias ~="cd ~"
+alias c="clear"
+alias cl="clear; ls"
+
+# File and Directory Operations
+alias ls='ls --color=auto'
+alias ll="ls -alF"
+alias la="ls -A"
+alias l="ls -CF"
+alias md="mkdir -p"
+alias rd="rmdir"
+alias mv="mv -i"
+alias cp="cp -i"
+alias rm="rm -i"
+alias rmd="rm -rf"
+alias du="du -h"
+alias df="df -h"
+alias h="history"
+
+# Git
+if which git &>/dev/null; then
+    alias gst="git status"
+    alias ga="git add"
+    alias gaa="git add ."
+    alias gcm="git commit -m"
+    alias gp="git push"
+    alias gpl="git pull"
+    alias gco="git checkout"
+    alias gcb="git checkout -b"
+    alias gb="git branch"
+    alias gl="git log"
+    alias gm="git merge"
+    alias gcl="git clone"
+fi
+
+# Kubectl
+if which kubectl &>/dev/null; then
+    alias k="kubectl"
+    alias kgp="kubectl get pods"
+    alias kgs="kubectl get svc"
+    alias kgd="kubectl get deployments"
+    alias kgn="kubectl get nodes"
+    alias kge="kubectl get events"
+    alias kaf="kubectl apply -f"
+    alias kdf="kubectl delete -f"
+    alias kgc="kubectl config get-contexts"
+    alias kcc="kubectl config current-context"
+    alias ksc="kubectl config set-context"
+    alias kuc="kubectl config use-context"
+    alias kd="kubectl describe"
+    alias kl="kubectl logs"
+    alias kex="kubectl exec -it"
+    alias kpf="kubectl port-forward"
+    alias krun="kubectl run"
+    alias kapp="kubectl apply -k"
+    alias kdel="kubectl delete"
+    alias ke="kubectl edit"
+    alias ka="kubectl apply -f"
+fi
+
+# tfenv
+if which tfenv &>/dev/null; then
+    alias tfv="tfenv"
+    alias tfvli="tfenv list"
+    alias tfvin="tfenv install"
+    alias tfvus="tfenv use"
+    alias tfvun="tfenv uninstall"
+    alias tfvlt="tfenv list-remote"
+    alias tfvup="tfenv update"
+fi
+
+# Terraform
+if which terraform &>/dev/null; then
+    alias tf="terraform"
+    alias tfi="terraform init"
+    alias tfp="terraform plan"
+    alias tfap="terraform apply"
+    alias tfda="terraform destroy"
+    alias tfv="terraform validate"
+    alias tff="terraform fmt"
+    alias tfst="terraform state"
+    alias tfo="terraform output"
+    alias tfpr="terraform providers"
+    alias tfws="terraform workspace"
+    alias tfs="terraform show"
+    alias tffu="terraform force-unlock"
+    alias tfta="terraform taint"
+    alias tfut="terraform untaint"
+    alias tfcp="terraform graph | dot -Tsvg > plan.svg && open plan.svg"
+fi
+
+# Docker
+if which docker &>/dev/null; then
+    alias dps="docker ps"
+    alias dexec="docker exec -it"
+    alias drm="docker rm"
+    alias drmi="docker rmi"
+    alias dlogs="docker logs"
+fi
+
+# Docker Compose
+if which docker-compose &>/dev/null; then
+    alias dcu="docker-compose up"
+    alias dcd="docker-compose down"
+    alias dcb="docker-compose build"
+    alias dcr="docker-compose run"
+fi
+
+# K3S
+if which k3s &>/dev/null; then
+    alias k3sstart="sudo k3s server"
+    alias k3sstop="sudo systemctl stop k3s"
+    alias k3sagent="sudo k3s agent"
+    alias k3sstatus="sudo systemctl status k3s"
+fi
+
+# Go (golang)
+if which go &>/dev/null; then
+    alias goclean="go clean"
+    alias goinstall="go install"
+    alias gotest="go test"
+    alias gobuild="go build"
+    alias gorun="go run"
+fi
+
+# Goenv (Go Version Manager)
+if which goenv &>/dev/null; then
+    alias goenvinstall="goenv install"
+    alias goenvglobal="goenv global"
+    alias goenvlocal="goenv local"
+    alias goenvversions="goenv versions"
+fi
+
+# NVM (Node Version Manager)
+if which nvm &>/dev/null; then
+    alias nvmuse="nvm use"
+    alias nvminstall="nvm install"
+    alias nvmdefault="nvm alias default"
+    alias nvmcurrent="nvm current"
+fi
+
+# npm (Node Package Manager)
+if which npm &>/dev/null; then
+    alias npminstall="npm install"
+    alias npmstart="npm start"
+    alias npmrun="npm run"
+    alias npmuninstall="npm uninstall"
+    alias npmlist="npm ls"
+fi
+
+# pnpm (Node Package Manager)
+if which pnpm &>/dev/null; then
+    alias pnpminstall="pnpm install"
+    alias pnpmstart="pnpm start"
+    alias pnpmrun="pnpm run"
+    alias pnpmuninstall="pnpm uninstall"
+    alias pnpmlist="pnpm ls"
+fi
+
+# Yarn (Node Package Manager)
+if which yarn &>/dev/null; then
+    alias yarninstall="yarn install"
+    alias yarnstart="yarn start"
+    alias yarnrun="yarn run"
+    alias yarnuninstall="yarn remove"
+    alias yarnlist="yarn list"
+fi
+
+# Pacman (Arch-based systems)
+if which pacman &>/dev/null; then
+    alias pacup="sudo pacman -Syu"
+    alias pacin="sudo pacman -S"
+    alias pacre="sudo pacman -R"
+    alias pacse="pacman -Ss"
+    alias pacli="pacman -Qi"
+    alias pacls="pacman -Qs"
+    alias pacrm="sudo pacman -Rns"
+    alias paccl="sudo pacman -Sc"
+    alias paccle="sudo pacman -Scc"
+    alias pacorph="sudo pacman -Rns $(pacman -Qdtq)"
+fi
+
+# Yay (Arch-based systems)
+if which yay &>/dev/null; then
+    alias yayup="yay -Syu"
+    alias yayin="yay -S"
+    alias yayre="yay -R"
+    alias yayse="yay -Ss"
+    alias yayli="yay -Qi"
+    alias yayls="yay -Qs"
+    alias yayrm="yay -Rns"
+    alias yaycl="yay -Sc"
+    alias yaycle="yay -Scc"
+    alias yayorph="yay -Rns $(yay -Qdtq)"
+fi
+
+# Apt-get (Debian-based systems)
+if which apt-get &>/dev/null; then
+    alias aptup="sudo apt-get update && sudo apt-get upgrade"
+    alias aptin="sudo apt-get install"
+    alias aptre="sudo apt-get remove"
+    alias aptse="apt-cache search"
+    alias aptli="apt-cache show"
+    alias aptls="dpkg -l"
+    alias aptautoremove="sudo apt-get autoremove"
+    alias aptclean="sudo apt-get clean"
+    alias aptorphans="sudo apt-get autoremove --purge && sudo deborphan | xargs sudo apt-get -y remove --purge"
+fi
+
+# Apt (Ubuntu and newer Debian-based systems)
+if which apt &>/dev/null; then
+    alias aptup="sudo apt update && sudo apt upgrade"
+    alias aptin="sudo apt install"
+    alias aptre="sudo apt remove"
+    alias aptse="apt search"
+    alias aptli="apt show"
+    alias aptls="dpkg -l"
+    alias aptautoremove="sudo apt autoremove"
+    alias aptclean="sudo apt clean"
+    alias aptorphans="sudo apt autoremove --purge && sudo apt-get autoremove --purge && sudo deborphan | xargs sudo apt-get -y remove --purge"
+fi
+
+# Dnf (Fedora and Red Hat-based systems)
+if which dnf &>/dev/null; then
+    alias dnfup="sudo dnf upgrade"
+    alias dnfin="sudo dnf install"
+    alias dnfre="sudo dnf remove"
+    alias dnfse="dnf search"
+    alias dnfinfo="dnf info"
+    alias dnfautoremove="sudo dnf autoremove"
+    alias dnfhistory="dnf history"
+fi
+
+# Zypper (openSUSE and SUSE-based systems)
+if which zypper &>/dev/null; then
+    alias zyup="sudo zypper refresh && sudo zypper update"
+    alias zyin="sudo zypper install"
+    alias zyre="sudo zypper remove"
+    alias zyse="zypper search"
+    alias zyli="zypper info"
+    alias zyls="zypper se --installed-only"
+    alias zydup="sudo zypper dup"
+    alias zyclean="sudo zypper clean"
+    alias zyorphans="sudo zypper packages --orphaned | awk '{print $5}' | sudo xargs zypper rm"
+fi
+
+# Nix-env (NixOS systems)
+if which nix-env &>/dev/null; then
+    alias nixup="nix-channel --update && nix-env -u"
+    alias nixin="nix-env -i"
+    alias nixre="nix-env -e"
+    alias nixse="nix-env -qaP"
+    alias nixli="nix-env -q"
+    alias nixls="nix-env -q --installed"
+    alias nixclean="nix-collect-garbage -d"
+fi
+
+# Homebrew (MacOS systems)
+if which brew &>/dev/null; then
+    alias brewup="brew update && brew upgrade"
+    alias brewin="brew install"
+    alias brewrm="brew uninstall"
+    alias brewse="brew search"
+    alias brewli="brew info"
+    alias brewls="brew list"
+    alias brewoutdated="brew outdated"
+    alias brewcleanup="brew cleanup"
+    alias breworphans="brew cleanup --prune=3 && brew doctor"
+fi
+
+# Network
+if which curl &>/dev/null; then
+    alias myip="curl ifconfig.me"
+fi
+if which netstat &>/dev/null; then
+    alias ports="netstat -tulanp"
+fi
+if which ping &>/dev/null; then
+    alias ping="ping -c 5"
+fi
+
+# System Monitoring
+if which htop &>/dev/null; then
+    alias top="htop"
+fi
+if which free &>/dev/null; then
+    alias meminfo="free -m -l -t"
+fi
+if which ps &>/dev/null; then
+    alias psmem="ps auxf | sort -nr -k 4"
+    alias pscpu="ps auxf | sort -nr -k 3"
+fi

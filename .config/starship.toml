@@ -29,7 +29,7 @@ $cmd_duration\
 $character
 """
 
-palette = 'frost'
+palette = 'polar_night'
 
 # Nord Polar Night
 [palettes.polar_night]
